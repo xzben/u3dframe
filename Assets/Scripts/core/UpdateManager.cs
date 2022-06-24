@@ -126,7 +126,7 @@ namespace LuaFramework
         public string getLuaRoot()
         {
 #if UNITY_EDITOR
-            if (AppConst.DebugMode)
+            if (!AppConst.DebugMode)
             {
                 return m_luaRoot;
             }
@@ -177,90 +177,99 @@ namespace LuaFramework
 
         public IEnumerator checkExtactResource(Action<int, int, int> process)
         {
-            string packageVersion = this.getPackageVersion();
-            string respath = Util.AppContentPath();
-            string luafile = respath + "myLua.bytes";
-            string bundlefile = respath + "AssetBundles.bytes";
-
-            //需要从 Resource 包内扩展lua代码
-            if (Util.compareVersion(this.getLocalVersion(), packageVersion) < 0)
+            if (!AppConst.DebugMode)
             {
-                process((int)UPDATE_STATUS.EXTRACT_LUA, 0, 0);
-                //基础包压缩文件
-                string zipLuaFilePath = System.IO.Path.Combine(m_writepath, "bins", "preload", "loading", "myLua.bytes");
-                if(FileTools.FileExists(zipLuaFilePath))
-                {
-                    File.Delete(zipLuaFilePath);
-                }
-                string dir = Path.GetDirectoryName(zipLuaFilePath);
-                if (!Directory.Exists(dir))
-                {
-                    Directory.CreateDirectory(dir);
-                }
+                string packageVersion = this.getPackageVersion();
+                string respath = Util.AppContentPath();
+                string luafile = respath + "myLua.bytes";
+                string bundlefile = respath + "AssetBundles.bytes";
 
-                if (Application.platform == RuntimePlatform.Android)
+                //需要从 Resource 包内扩展lua代码
+                if (Util.compareVersion(this.getLocalVersion(), packageVersion) < 0)
                 {
-                    UnityWebRequest req = UnityWebRequest.Get(luafile);
-                    yield return req.SendWebRequest();
-
-                    Debug.Log("UPDATE_STATUS.EXTRACT_LUA " + luafile + " writepath :" + m_writepath + " done:" + req.isDone);
-                    if (!req.isNetworkError && req.isDone)
+                    process((int)UPDATE_STATUS.EXTRACT_LUA, 0, 0);
+                    //基础包压缩文件
+                    string zipLuaFilePath = System.IO.Path.Combine(m_writepath, "bins", "preload", "loading", "myLua.bytes");
+                    if (FileTools.FileExists(zipLuaFilePath))
                     {
-                        File.WriteAllBytes(zipLuaFilePath, req.downloadHandler.data);
+                        File.Delete(zipLuaFilePath);
+                    }
+                    string dir = Path.GetDirectoryName(zipLuaFilePath);
+                    if (!Directory.Exists(dir))
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+
+                    if (Application.platform == RuntimePlatform.Android)
+                    {
+                        UnityWebRequest req = UnityWebRequest.Get(luafile);
+                        yield return req.SendWebRequest();
+
+                        Debug.Log("UPDATE_STATUS.EXTRACT_LUA " + luafile + " writepath :" + m_writepath + " done:" + req.isDone);
+                        if (!req.isNetworkError && req.isDone)
+                        {
+                            File.WriteAllBytes(zipLuaFilePath, req.downloadHandler.data);
+                        }
+                        else
+                        {
+                            Debug.LogError("get file failed" + luafile + "error:" + req.error);
+                        }
+                        Debug.Log("UPDATE_STATUS.EXTRACT_LUA " + luafile);
                     }
                     else
                     {
-                        Debug.LogError("get file failed" + luafile + "error:" + req.error);
+                        File.Copy(luafile, zipLuaFilePath, true);
                     }
-                    Debug.Log("UPDATE_STATUS.EXTRACT_LUA " + luafile);
-                }
-                else
-                {
-                    File.Copy(luafile, zipLuaFilePath, true);
-                }
-                yield return new WaitForEndOfFrame();
+                    yield return new WaitForEndOfFrame();
 
-                Debug.Log("UPDATE_STATUS.EXTRACT_INSTALL_LUA");
-                yield return InstallLuaFiles(zipLuaFilePath, true, delegate(){
-                    Debug.Log("UPDATE_STATUS.EXTRACT_INSTALL_LUA 0");
-                    process((int)UPDATE_STATUS.EXTRACT_INSTALL_LUA, 0, 0);
-                }, delegate(int curzie, int totoal, string file) {
-                    Debug.Log("UPDATE_STATUS.EXTRACT_INSTALL_LUA totoal:" + curzie + " totoal:" + totoal);
-                    process((int)UPDATE_STATUS.EXTRACT_INSTALL_LUA, curzie, totoal);
-                }, delegate() {
-                    process((int)UPDATE_STATUS.EXTRACT_INSTALL_LUA_DONE, 0, 0);
-                });
-                
-                // 安装 res
-                string zipBundlesFilePath = System.IO.Path.Combine(m_writepath, "res", "preload", "loading", "AssetBundles.bytes");
-                process((int)UPDATE_STATUS.EXTRACT_RES, 0, 0);
-                if (Application.platform == RuntimePlatform.Android)
-                {
-                    UnityWebRequest req = UnityWebRequest.Get(bundlefile);
-                    yield return req.SendWebRequest();
-
-                    if (!req.isNetworkError && req.isDone)
+                    Debug.Log("UPDATE_STATUS.EXTRACT_INSTALL_LUA");
+                    yield return InstallLuaFiles(zipLuaFilePath, true, delegate ()
                     {
-                        File.WriteAllBytes(zipBundlesFilePath, req.downloadHandler.data);
+                        Debug.Log("UPDATE_STATUS.EXTRACT_INSTALL_LUA 0");
+                        process((int)UPDATE_STATUS.EXTRACT_INSTALL_LUA, 0, 0);
+                    }, delegate (int curzie, int totoal, string file)
+                    {
+                        Debug.Log("UPDATE_STATUS.EXTRACT_INSTALL_LUA totoal:" + curzie + " totoal:" + totoal);
+                        process((int)UPDATE_STATUS.EXTRACT_INSTALL_LUA, curzie, totoal);
+                    }, delegate ()
+                    {
+                        process((int)UPDATE_STATUS.EXTRACT_INSTALL_LUA_DONE, 0, 0);
+                    });
+
+                    // 安装 res
+                    string zipBundlesFilePath = System.IO.Path.Combine(m_writepath, "res", "preload", "loading", "AssetBundles.bytes");
+                    process((int)UPDATE_STATUS.EXTRACT_RES, 0, 0);
+                    if (Application.platform == RuntimePlatform.Android)
+                    {
+                        UnityWebRequest req = UnityWebRequest.Get(bundlefile);
+                        yield return req.SendWebRequest();
+
+                        if (!req.isNetworkError && req.isDone)
+                        {
+                            File.WriteAllBytes(zipBundlesFilePath, req.downloadHandler.data);
+                        }
+                        else
+                        {
+                            Debug.LogError("get file failed" + bundlefile + "error:" + req.error);
+                        }
                     }
                     else
                     {
-                        Debug.LogError("get file failed" + bundlefile + "error:" + req.error);
+                        File.Copy(bundlefile, zipBundlesFilePath, true);
                     }
-                }
-                else
-                {
-                    File.Copy(bundlefile, zipBundlesFilePath, true);
-                }
-                yield return this.InstallResFiles(zipBundlesFilePath, true, delegate() {
-                    process((int)UPDATE_STATUS.EXTRACT_INSTALL_RES, 0, 0);
-                }, delegate(int cursize, int totoal, string file) {
-                    process((int)UPDATE_STATUS.EXTRACT_INSTALL_RES, cursize, totoal);
-                }, delegate() {
-                    process((int)UPDATE_STATUS.EXTRACT_INSTALL_RES_DONE, 0, 0);
-                });
+                    yield return this.InstallResFiles(zipBundlesFilePath, true, delegate ()
+                    {
+                        process((int)UPDATE_STATUS.EXTRACT_INSTALL_RES, 0, 0);
+                    }, delegate (int cursize, int totoal, string file)
+                    {
+                        process((int)UPDATE_STATUS.EXTRACT_INSTALL_RES, cursize, totoal);
+                    }, delegate ()
+                    {
+                        process((int)UPDATE_STATUS.EXTRACT_INSTALL_RES_DONE, 0, 0);
+                    });
 
-                File.WriteAllText(this.m_localVerFilePath, packageVersion);
+                    File.WriteAllText(this.m_localVerFilePath, packageVersion);
+                }
             }
         }
 

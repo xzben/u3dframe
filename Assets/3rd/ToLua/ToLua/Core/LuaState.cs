@@ -195,7 +195,7 @@ namespace LuaInterface
                     throw new LuaException(msg);
                 }
 
-                if (LuaFramework.AppConst.DebugMode)
+                if (!LuaFramework.AppConst.DebugMode)
                 {
                     AddSearchPath(LuaConst.luaPersistentDataPath);
                     AddSearchPath(LuaConst.toluaPersistentDataPath);

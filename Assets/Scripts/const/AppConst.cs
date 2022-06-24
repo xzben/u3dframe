@@ -13,7 +13,7 @@ namespace LuaFramework
         public static string ToLuaDir = Application.dataPath + "/3rd/ToLua/ToLua/Lua";        //tolua lua文件目录
         public static string LuaBundleTemp = Application.dataPath + "Lua";
 
-        public const bool DebugMode = false;                       //调试模式-用于内部测试
+        public const bool DebugMode = true;                       //调试模式-用于内部测试
         public const bool BundleRes = false;                     //资源打包
      
         public const bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 

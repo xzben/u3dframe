@@ -1,3 +1,8 @@
 Library/
 .vs/
 Assets/StreamingAssets/
+ASM/
+AssetBundles/
+builds/
+obj/
+Temp/

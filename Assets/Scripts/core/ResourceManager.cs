@@ -109,7 +109,7 @@ namespace LuaFramework
 
         public void Init()
         {
-            if (!Application.isEditor || AppConst.DebugMode)
+            if (!Application.isEditor || !AppConst.DebugMode)
             {
                 AssetBundle assetbundle = null;
                 if (Application.platform == RuntimePlatform.Android)
@@ -146,7 +146,7 @@ namespace LuaFramework
         //释放 bundle 引用 
         public void UnloadBundle(string assetBundleName)
         {
-            if (Application.isEditor && !AppConst.DebugMode) return;
+            if (Application.isEditor || AppConst.DebugMode) return;
             assetBundleName = assetBundleName.ToLower();
             string[] dependencies = this.m_assetBundleHelper.GetSortedDependencies(assetBundleName);
             foreach (string dependency in dependencies)
@@ -158,7 +158,7 @@ namespace LuaFramework
         //强制卸载 bundle
         public void UnloadBundleWithStrong(string assetBundleName)
         {
-            if (Application.isEditor && !AppConst.DebugMode) return;
+            if (Application.isEditor || AppConst.DebugMode) return;
             assetBundleName = assetBundleName.ToLower();
             string[] dependencies = this.m_assetBundleHelper.GetSortedDependencies(assetBundleName);
             foreach (string dependency in dependencies)
@@ -208,7 +208,7 @@ namespace LuaFramework
         public UnityEngine.Object GetAsset(string bundleName, string prefab)
         {
             //Editor
-            if (!AppConst.DebugMode && (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor))
+            if (AppConst.DebugMode && (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor))
             {
 #if UNITY_EDITOR
                 if (!editor_cache.ContainsKey(bundleName))
@@ -321,7 +321,7 @@ namespace LuaFramework
         {
             yield return new WaitForEndOfFrame();
             //Editor
-            if (!AppConst.DebugMode && (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor))
+            if (AppConst.DebugMode && (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor))
             {
                 if (callback != null)
                 {
@@ -390,7 +390,7 @@ namespace LuaFramework
         public ABInfo LoadBundle(string assetBundleName)
         {
             //Editor
-            if (!AppConst.DebugMode && (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor))
+            if (AppConst.DebugMode && (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.OSXEditor))
             {
                 return null;
             }

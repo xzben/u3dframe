@@ -32,17 +32,20 @@ public class Packager {
     [MenuItem("发布/Build Android Resource", false, 101)]
     public static void BuildAndroidResource() {
         BuildAssetResource(BuildTarget.Android);
+        CopyAB(BuildTarget.Android);
     }
 
     [MenuItem("发布/Build Windows Resource", false, 102)]
     public static void BuildWindowsResource() {
         BuildAssetResource(BuildTarget.StandaloneWindows);
+        CopyAB(BuildTarget.StandaloneWindows);
     }
 
     [MenuItem("发布/Build Windows64 Resource", false, 102)]
     public static void BuildWindow64sResource()
     {
         BuildAssetResource(BuildTarget.StandaloneWindows64);
+        CopyAB(BuildTarget.StandaloneWindows64);
     }
 
     [MenuItem("发布/发布打包Lua", false, 103)]
