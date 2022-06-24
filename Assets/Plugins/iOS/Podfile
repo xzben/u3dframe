@@ -1,0 +1,15 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+
+
+target 'UnityFramework' do
+   # Comment the next line if you don't want to use dynamic frameworks
+   # use_frameworks!
+   use_modular_headers!
+   # Pods for ios-arrow-mobile
+   #pod 'WechatOpenSDK', '= 1.8.7.1'
+   pod 'Ads-CN', '= 4.0.0.5' 
+   #pod 'Ads-Global'
+   pod 'Google-Mobile-Ads-SDK'
+end

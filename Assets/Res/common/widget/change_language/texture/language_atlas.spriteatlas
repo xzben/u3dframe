@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: language_atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 5fe0526edbf1d44f2bd1099723a24449, type: 3}
+    totalSpriteSurfaceArea: 853247
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 818f6050f6f484bf2914cf503e31a3b1, type: 3}
+  - {fileID: 21300000, guid: 39898b91b200b46e58ea8157b26580e0, type: 3}
+  - {fileID: 21300000, guid: bf3e2705de5df4737ab69bea636764c1, type: 3}
+  - {fileID: 21300000, guid: f32e61079871645ef83dcf814c93e0ac, type: 3}
+  - {fileID: 21300000, guid: 44f5803becfea458596c8cf120c94a93, type: 3}
+  - {fileID: 21300000, guid: 5aa3847c900b04fd0a9a2c631a796fb2, type: 3}
+  - {fileID: 21300000, guid: 50d435ee44b644db4a33079e688a76a4, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - "\u88C5\u9970"
+  - "\u8BED\u8A00\u9009\u62E9-\u9009\u4E2D"
+  - "\u5207\u6362\u8BED\u8A00icon"
+  - "\u6807\u8BC6-\u672A\u4E0B\u8F7D\u8BED\u8A00\u5305"
+  - "\u5207\u6362\u8BED\u8A00\u6587\u5B57\u5E95"
+  - "\u8BED\u8A00\u9009\u62E9-\u672A\u9009\u4E2D"
+  - "\u8BED\u8A00\u9009\u62E9\u5F39\u7A97"
+  m_Tag: language_atlas
+  m_IsVariant: 0

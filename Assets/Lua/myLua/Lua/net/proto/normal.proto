@@ -1,0 +1,91 @@
+package normal;
+
+
+
+message PlayerItem
+{
+	required int32 id = 1;   //道具id
+	required int32 num = 2;  //道具拥有数量
+}
+
+message PlayerProp
+{
+	required int32 	id = 1; 	//属性id
+	optional int32  nval = 2; 	//属性值
+	optional string sval = 3; 	//属性值
+}
+
+message PlayerInfo
+{
+	required int32 	uid = 1;			//玩家id
+	required string nickname = 2; 	//玩家昵称
+	required string icon = 3;
+	required int32  createTime = 4; //注册时间
+	required int32  loginTime = 5; //上次登录时间
+	repeated PlayerItem items = 6; //玩家拥有道具
+	repeated PlayerProp props = 7; //玩家拥有属性
+	optional int32  isnew = 8; //是否是新注册用户
+}
+
+message LoginReq
+{
+	required int32  sdk = 1;		//登录账号方式   1、win32 快捷登录
+	required string openId = 2;
+	required int32  areaId = 3;   //分区服 ID,分服使用
+	required int32  platform = 4;  //登录平台  1、win32  2、android 3、ios  4、web
+	required string	clientFullVersion = 5; //app 整包版本号
+	required string  clientResVersion = 6; //app 资源版本号
+	required string channel = 7; //玩家来源渠道
+	optional string nickname = 8; //玩家的昵称
+	optional string icon = 9; //玩家的icon
+}
+
+message ItemChange
+{
+	required int32 id = 1; 		//道具id
+	required int32 change = 2 ; //变化数量
+	required int32 curNum = 3; 	//当前数量	
+}
+
+message PropertyChange
+{
+	repeated PlayerProp update = 1; //变化的属性列表
+	repeated int32  delete = 2; //删除的属性
+}
+
+message ItemChangeList
+{
+	repeated ItemChange list = 1; //变化的道具列表
+	required int32  way = 2; //产生变化的渠道
+}
+
+message GameInfo
+{
+	required int32 gameId = 1; //所在游戏
+	required int32 roomId = 2; //所在的房间
+}
+
+message LoginData
+{
+	optional GameInfo   game = 1;//玩家所在游戏信息
+}
+
+message	LoginResp
+{
+	required int32      result =  1; //登录结果, result = 0 代表登录成功，其它代表错误类型
+	optional PlayerInfo info = 2; //玩家信息
+	optional int32  	aid = 3; // 玩家账号id
+	optional LoginData  data = 4; //玩家登录信息
+	optional string		quicklyCode = 5; //快捷登录码
+}
+
+message reqPlayerRealAuth
+{
+	required string  code = 1; //身份证号码
+	required string  name = 2; //名字
+}
+
+message respPlayerRealAuth
+{
+	required int32 code = 1; //校验结果
+}

@@ -1,0 +1,4 @@
+include ':launcher', ':unityLibrary'
+**INCLUDES**
+include ':SDKLibrary'
+project(':SDKLibrary').projectDir = new File(settingsDir, '../../../android_studio_project/SDKLibrary')
